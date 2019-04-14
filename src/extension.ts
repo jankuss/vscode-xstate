@@ -1,11 +1,5 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import console = require("console");
-import { StateNode, Machine, interpret, assign } from "xstate";
-import * as XState from "xstate";
 import * as path from "path";
-import * as fs from "fs";
 import * as ts from "typescript";
 
 const resource = (context: vscode.ExtensionContext, ...paths: string[]) =>
@@ -73,6 +67,9 @@ class VisualizerPanel {
       })
       .toString();
 
+    // TODO: Icons not working
+    /*
+      
     const icon = resource(this.context, "icon.png").with({
       scheme: "vscode-resource"
     });
@@ -80,23 +77,21 @@ class VisualizerPanel {
     this.panel.iconPath = {
       light: icon,
       dark: icon
-    };
+    };*/
 
-    this.panel.webview.html = `
-  <!DOCTYPE html>
-  <html>
-    <head>
-      <meta charset="UTF-8" />
-      <title>Hello React!</title>
-    </head>
-    <body>
-      <div id="root"></div>
-  
-      <!-- Main -->
-      <script src="${filePath}"></script>
-    </body>
-  </html>
-  `;
+    this.panel.webview.html = `<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Main -->
+    <script src="${filePath}"></script>
+  </body>
+</html>`;
 
     vscode.workspace.onDidSaveTextDocument(document => {
       if (document.fileName === this.document.fileName) {
@@ -149,7 +144,7 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   const disposable = vscode.commands.registerTextEditorCommand(
-    "extension.helloWorld",
+    "vscode-xstate.viz",
     editor => {
       openVisualizer(editor.document);
     }
@@ -161,7 +156,6 @@ export function activate(context: vscode.ExtensionContext) {
 
   vscode.workspace.onDidSaveTextDocument(document => {
     const vis = getVisualizer(document);
-    console.log("Saved document", !!vis);
 
     if (vis) {
       vis.changeDocument(document);
