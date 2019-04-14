@@ -1,46 +1,49 @@
 {
-	"name": "vscode-xstate",
-	"displayName": "vscode-xstate",
-	"description": "XState Tools for Visual Studio Code",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.33.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
-	],
-	"main": "./out/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
-			}
-		]
-	},
-	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "yarn run compile && node ./node_modules/vscode/bin/test"
-	},
-	"devDependencies": {
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^10.12.21",
-		"@types/react": "^16.8.13",
-		"@types/styled-components": "^4.1.14",
-		"tslint": "^5.12.1",
-		"typescript": "^3.3.1",
-		"vscode": "^1.1.28"
-	},
-	"dependencies": {
-		"@statecharts/xstate-viz": "^0.2.0",
-		"react": "^16.8.6",
-		"styled-components": "^4.2.0",
-		"xstate": "^4.5.0"
-	}
+  "name": "vscode-xstate",
+  "displayName": "vscode-xstate",
+  "description": "XState Tools for Visual Studio Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.33.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.helloWorld"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.helloWorld",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./ && cd visualizer && yarn build",
+    "watch": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "yarn run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^10.12.21",
+    "@types/react": "^16.8.13",
+    "@types/react-dom": "^16.8.4",
+    "awesome-typescript-loader": "^5.2.1",
+    "tslint": "^5.12.1",
+    "typescript": "^3.4.3",
+    "vscode": "^1.1.28",
+    "webpack-cli": "^3.3.0"
+  },
+  "dependencies": {
+    "@statecharts/xstate-viz": "^0.2.0",
+    "react": "^16.8.6",
+    "source-map-loader": "^0.2.4",
+    "webpack": "^4.30.0",
+    "xstate": "^4.5.0"
+  }
 }

@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "lib": ["es6"],
     "sourceMap": true,
-    "jsx": "react",
     "rootDir": "src",
     "strict": true /* enable all strict type-checking options */
     /* Additional Checks */
@@ -14,6 +13,6 @@
     // "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
     // "noUnusedParameters": true,  /* Report errors on unused parameters. */
   },
-  "exclude": ["node_modules", ".vscode-test"],
+  "exclude": ["node_modules", ".vscode-test", "visualizer"],
   "include": ["src/**/*"]
 }
