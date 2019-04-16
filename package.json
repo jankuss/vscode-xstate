@@ -23,8 +23,8 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./ && cd visualizer && yarn build",
-    "watch": "tsc -watch -p ./",
+    "compile": "tsc -p ./ && webpack",
+    "watch": "tsc -watch -p ./ & webpack --watch & wait",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "yarn run compile && node ./node_modules/vscode/bin/test"
   },

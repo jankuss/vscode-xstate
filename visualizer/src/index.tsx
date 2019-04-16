@@ -15,10 +15,8 @@ function toMachine(
 
   try {
     createMachine = new Function(
-      "Machine",
-      "interpret",
-      "assign",
-      "XState",
+      "xstate_1",
+      "exports",
       machine
     );
   } catch (e) {
@@ -26,16 +24,20 @@ function toMachine(
   }
 
   let resultMachine: XState.StateNode<any>;
+  let createdMachine = false;
 
   const machineProxy = (config: any, options: any, ctx: any) => {
+    if (createdMachine) {
+      throw new Error("There were multiple Machines defined in the file.");
+    }
+    createdMachine = true;
+    
     resultMachine = XState.Machine(config, options, ctx);
-
-    console.log(resultMachine);
 
     return resultMachine;
   };
 
-  createMachine(machineProxy, XState.interpret, XState.assign, XState);
+  createMachine({ ...XState, Machine: machineProxy }, {});
 
   return resultMachine! as XState.StateNode<any>;
 }
@@ -58,8 +60,6 @@ export function App() {
   }
 
   function receiveMessage(event: MessageEvent) {
-    console.log(event);
-
     if (event.data.type === "EDITOR_TEXT") {
       const machine = toMachine(event.data.payload);
       setMachine(machine);
@@ -71,18 +71,17 @@ export function App() {
     vscode.postMessage({ type: "SUBSCRIBED" });
 
     return function cleanup() {
-      console.log("CLEANUP");
       window.removeEventListener("message", receiveMessage);
     };
   }, []);
 
-  console.log("Render");
-  if (!machine)
+  if (!machine) {
     return (
       <div>
         <h1>Loading..</h1>
       </div>
     );
+  }
 
   return <StateChart machine={machine} ref={stateMachineRef} />;
 }

@@ -28,12 +28,17 @@ class VisualizerPanel {
     }
 
     // We can transpile from typescript, since TS is a superset of JS.
-    const transpiled = ts.transpileModule(this.document.getText(), {});
+    const transpiled = ts.transpileModule(this.document.getText(), { compilerOptions: { module: ts.ModuleKind.None } });
+    const removedImports = transpiled.outputText.match(/^((?!require\(('xstate'|"xstate"|`xstate`)\)).)*$/gm);
 
-    this.panel.webview.postMessage({
-      type: "EDITOR_TEXT",
-      payload: transpiled.outputText
-    });
+    if (removedImports) {
+      const editorText = removedImports.join("\n");
+
+      this.panel.webview.postMessage({
+        type: "EDITOR_TEXT",
+        payload: editorText
+      });
+    }
   }
 
   changeDocument(document: vscode.TextDocument) {
@@ -95,8 +100,13 @@ class VisualizerPanel {
 
     vscode.workspace.onDidSaveTextDocument(document => {
       if (document.fileName === this.document.fileName) {
-        this.document = document;
-        this.updateText();
+        this.changeDocument(document);
+      }
+    });
+
+    vscode.workspace.onDidChangeTextDocument(event => {
+      if (event.document.fileName === this.document.fileName && event.contentChanges.length > 0) {
+        this.changeDocument(document);
       }
     });
   }
