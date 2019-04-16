@@ -17,6 +17,7 @@ function toMachine(
     createMachine = new Function(
       "xstate_1",
       "exports",
+      "require",
       machine
     );
   } catch (e) {
@@ -30,14 +31,17 @@ function toMachine(
     if (createdMachine) {
       throw new Error("There were multiple Machines defined in the file.");
     }
-    createdMachine = true;
-    
     resultMachine = XState.Machine(config, options, ctx);
 
     return resultMachine;
   };
 
-  createMachine({ ...XState, Machine: machineProxy }, {});
+  try {
+  createMachine({ ...XState, Machine: machineProxy }, {}, () => ({}));
+  } catch(e) {
+    alert("Error creating machine");
+    console.error(e);
+  }
 
   return resultMachine! as XState.StateNode<any>;
 }
